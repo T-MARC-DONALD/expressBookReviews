@@ -57,6 +57,56 @@ export function getBooksByTitlePromise(title) {
     });
 }
 
+// Using GET requests for better RESTful practices
+export async function getAllBooksAsyncGET() {
+    try {
+        const response = await axios.get(`${BASE_URL}/books`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching all books:', error.message);
+        throw error;
+    }
+}
+
+export function getBooksByISBNPromiseGET(ISBN) {
+    return new Promise((resolve, reject) => {
+        axios.get(`${BASE_URL}/books/byISBN?ISBN=${ISBN}`)
+            .then(response => {
+                resolve(response.data);
+            })
+            .catch(error => {
+                console.error('Error searching books by ISBN:', error.message);
+                reject(error);
+            });
+    });
+}
+
+export function getBooksByAuthorPromiseGET(author) {
+    return new Promise((resolve, reject) => {
+        axios.get(`${BASE_URL}/books/byAuthor?author=${encodeURIComponent(author)}`)
+            .then(response => {
+                resolve(response.data);
+            })
+            .catch(error => {
+                console.error('Error searching books by author:', error.message);
+                reject(error);
+            });
+    });
+}
+
+export function getBooksByTitlePromiseGET(title) {
+    return new Promise((resolve, reject) => {
+        axios.get(`${BASE_URL}/books/byTitle?title=${encodeURIComponent(title)}`)
+            .then(response => {
+                resolve(response.data);
+            })
+            .catch(error => {
+                console.error('Error searching books by title:', error.message);
+                reject(error);
+            });
+    });
+}
+
 // Example usage functions to demonstrate all patterns
 export async function demonstrateBookOperations() {
     console.log('=== Book Review Application - Async/Await and Promise Patterns ===\n');
@@ -64,7 +114,7 @@ export async function demonstrateBookOperations() {
     // 1. Using async/await to get all books
     console.log('1. Using async/await to retrieve all books:');
     try {
-        const allBooks = await getAllBooksAsync();
+        const allBooks = await getAllBooksAsyncGET();
         console.log('✓ Successfully retrieved all books:');
         console.log(JSON.stringify(allBooks, null, 2));
     } catch (error) {
@@ -75,7 +125,7 @@ export async function demonstrateBookOperations() {
 
     // 2. Using Promises to search by ISBN
     console.log('2. Using Promises to search books by ISBN:');
-    getBooksByISBNPromise('978-3-16-148410-0')
+    getBooksByISBNPromiseGET('978-3-16-148410-0')
         .then(result => {
             console.log('✓ Successfully searched books by ISBN:');
             console.log(JSON.stringify(result, null, 2));
@@ -88,7 +138,7 @@ export async function demonstrateBookOperations() {
 
     // 3. Using Promises to search by author
     console.log('3. Using Promises to search books by author:');
-    getBooksByAuthorPromise('J.K. Rowling')
+    getBooksByAuthorPromiseGET('J.K. Rowling')
         .then(result => {
             console.log('✓ Successfully searched books by author:');
             console.log(JSON.stringify(result, null, 2));
@@ -101,7 +151,7 @@ export async function demonstrateBookOperations() {
 
     // 4. Using Promises to search by title
     console.log('4. Using Promises to search books by title:');
-    getBooksByTitlePromise('Harry Potter')
+    getBooksByTitlePromiseGET('Harry Potter')
         .then(result => {
             console.log('✓ Successfully searched books by title:');
             console.log(JSON.stringify(result, null, 2));
@@ -117,9 +167,13 @@ export async function demonstrateBookOperations() {
 // Export all functions for external use
 export {
     getAllBooksAsync,
+    getAllBooksAsyncGET,
     getBooksByISBNPromise,
+    getBooksByISBNPromiseGET,
     getBooksByAuthorPromise,
+    getBooksByAuthorPromiseGET,
     getBooksByTitlePromise,
+    getBooksByTitlePromiseGET,
     demonstrateBookOperations
 };
 
